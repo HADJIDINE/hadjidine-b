@@ -1,16 +1,22 @@
-# 1. Étape de compilation (Build)
+# 1. Image officielle Maven avec Java 21 pour tout compiler
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copie le dossier backend
-COPY backend/ /app/
+# Copie tous les fichiers du dossier courant vers le conteneur
+COPY . .
 
-# Compilation depuis le dossier contenant pom.xml
+# Compilation Maven en ignorant les tests pour aller plus vite
 RUN mvn clean package -DskipTests
 
-# 2. Étape d'exécution (Runtime)
+# 2. Image légère Java 21 pour l'exécution
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
+
+# Copie le fichier .jar généré
 COPY --from=build /app/target/*.jar app.jar
+
+# Port d'écoute par défaut
 EXPOSE 8080
+
+# Commande de démarrage
 ENTRYPOINT ["java", "-jar", "app.jar"]
