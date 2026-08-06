@@ -2,10 +2,10 @@
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copie tous les fichiers du projet (pom.xml, src, etc.)
-COPY . .
+# Copie le dossier backend
+COPY backend/ /app/
 
-# Compilation du projet Spring Boot
+# Compilation depuis le dossier contenant pom.xml
 RUN mvn clean package -DskipTests
 
 # 2. Étape d'exécution (Runtime)
