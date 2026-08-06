@@ -1,7 +1,11 @@
 # 1. Étape de compilation (Build)
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY . .
+
+# Copie le dossier backend
+COPY backend/ /app/
+
+# Compilation depuis le dossier contenant pom.xml
 RUN mvn clean package -DskipTests
 
 # 2. Étape d'exécution (Runtime)
