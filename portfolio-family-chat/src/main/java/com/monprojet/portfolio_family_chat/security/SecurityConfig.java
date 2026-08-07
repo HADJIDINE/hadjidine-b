@@ -44,7 +44,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
+
+        // Autoriser à la fois le local et ton nouveau domaine Vercel
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://hadjidine-f.vercel.app" // Ton domaine Vercel
+        ));
+
+        // Accepter toutes les origines Vercel au cas où (ex: prévisualisations)
+        configuration.setAllowedOriginPatterns(List.of("https://*.vercel.app"));
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
